@@ -1,4 +1,4 @@
-# GeoServer 2.7.0
+# GeoServer 2.7.2
 # Oracle JRE 1.7
 
 FROM ubuntu:14.04
@@ -57,6 +57,7 @@ RUN chmod +x /usr/local/bin/startup.sh
 EXPOSE 8080
 
 # Add VOLUMEs to for inspection, datastorage, and backup --------------------------------------------------------------#
+# TODO: useful in our use case?
 #VOLUME  ["/var/log/tomcat7", "/var/log/supervisor", "/var/lib/geoserver/data", "/var/lib/tomcat7/webapps/geoserver"]
 
 # Startup
