@@ -28,7 +28,32 @@ COPY tomcat7.zip /geoserver/tomcat7.zip
 RUN unzip /geoserver/tomcat7.zip -d /geoserver
 
 # Install JAI and JAI Image I/O ---------------------------------------------------------------------------------------#
-# TODO!!!!!
+WORKDIR /tmp
+RUN wget http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz && \
+    wget http://download.java.net/media/jai-imageio/builds/release/1.1/jai_imageio-1_1-lib-linux-amd64.tar.gz && \
+    gunzip -c jai-1_1_3-lib-linux-amd64.tar.gz | tar xf - && \
+    gunzip -c jai_imageio-1_1-lib-linux-amd64.tar.gz | tar xf - && \
+    mv /tmp/jai-1_1_3/COPYRIGHT-jai.txt $JAVA_HOME/jre && \
+    mv /tmp/jai-1_1_3/UNINSTALL-jai $JAVA_HOME/jre && \
+    mv /tmp/jai-1_1_3/LICENSE-jai.txt $JAVA_HOME/jre && \
+    mv /tmp/jai-1_1_3/DISTRIBUTIONREADME-jai.txt $JAVA_HOME/jre && \
+    mv /tmp/jai-1_1_3/THIRDPARTYLICENSEREADME-jai.txt $JAVA_HOME/jre && \
+    mv /tmp/jai-1_1_3/lib/jai_core.jar $JAVA_HOME/jre/lib/ext/ && \
+    mv /tmp/jai-1_1_3/lib/jai_codec.jar $JAVA_HOME/jre/lib/ext/ && \
+    mv /tmp/jai-1_1_3/lib/mlibwrapper_jai.jar $JAVA_HOME/jre/lib/ext/ && \
+    mv /tmp/jai-1_1_3/lib/libmlib_jai.so $JAVA_HOME/jre/lib/amd64/ && \
+    mv /tmp/jai_imageio-1_1/COPYRIGHT-jai_imageio.txt $JAVA_HOME/jre && \
+    mv /tmp/jai_imageio-1_1/UNINSTALL-jai_imageio $JAVA_HOME/jre && \
+    mv /tmp/jai_imageio-1_1/LICENSE-jai_imageio.txt $JAVA_HOME/jre && \
+    mv /tmp/jai_imageio-1_1/DISTRIBUTIONREADME-jai_imageio.txt $JAVA_HOME/jre && \
+    mv /tmp/jai_imageio-1_1/THIRDPARTYLICENSEREADME-jai_imageio.txt $JAVA_HOME/jre && \
+    mv /tmp/jai_imageio-1_1/lib/jai_imageio.jar $JAVA_HOME/jre/lib/ext/ && \
+    mv /tmp/jai_imageio-1_1/lib/clibwrapper_jiio.jar $JAVA_HOME/jre/lib/ext/ && \
+    mv /tmp/jai_imageio-1_1/lib/libclib_jiio.so $JAVA_HOME/jre/lib/amd64/ && \
+    rm /tmp/jai-1_1_3-lib-linux-amd64.tar.gz && \
+    rm -r /tmp/jai-1_1_3 && \
+    rm /tmp/jai_imageio-1_1-lib-linux-amd64.tar.gz && \
+    rm -r /tmp/jai_imageio-1_1
 
 # Setup supervisor ----------------------------------------------------------------------------------------------------#
 RUN apt-get update && apt-get install -y supervisor
@@ -57,7 +82,7 @@ RUN chmod +x /usr/local/bin/startup.sh
 EXPOSE 8080
 
 # Add VOLUMEs to for inspection, datastorage, and backup --------------------------------------------------------------#
-# TODO: useful in our use case?
+# TODO: useful in our use case? Should be added at least for the logs?
 #VOLUME  ["/var/log/tomcat7", "/var/log/supervisor", "/var/lib/geoserver/data", "/var/lib/tomcat7/webapps/geoserver"]
 
 # Startup
