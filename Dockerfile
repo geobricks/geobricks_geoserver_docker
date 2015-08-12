@@ -26,6 +26,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 RUN mkdir /geoserver
 COPY tomcat7.zip /geoserver/tomcat7.zip
 RUN unzip /geoserver/tomcat7.zip -d /geoserver
+RM /geoserver/tomcat7.zip
 
 # Install JAI and JAI Image I/O ---------------------------------------------------------------------------------------#
 WORKDIR /tmp
@@ -59,10 +60,10 @@ RUN wget http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-l
 RUN apt-get update && apt-get install -y supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/
 
-
 # Unpack the war and make a new data directory
 COPY geoserver.war /geoserver/geoserver.war
 RUN unzip /geoserver/geoserver.war -d /geoserver/tomcat7/webapps/geoserver
+RM /geoserver/geoserver.war
 
 # Custom GeoServer Web Config
 COPY web.xml /geoserver/tomcat7/webapps/geoserver/WEB-INF/web.xml
